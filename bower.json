@@ -1,0 +1,15 @@
+{
+  "name": "lb-swagger",
+  "description": "central swagger app",
+  "authors": [
+    "muditsatija1 <mudit.satija@delhivery.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "dependencies": {
+    "angular-sanitize": "~1.5.5",
+    "angular-swagger-ui": "~0.3.1",
+    "json-formatter": "~0.6.0"
+  }
+}

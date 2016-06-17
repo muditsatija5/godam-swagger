@@ -1,0 +1,40 @@
+<div style="margin: 5px" ng-init="getJsonData()">
+	<div ng-repeat="(titles, val) in apiList | orderBy: 'title' | groupBy: 'title'">
+		<hr ng-show="!$first">
+		<a style="margin: 5px 5px 0px 15px">{{titles}}</a>
+		<div ng-repeat="(key, value) in val | groupBy: 'tags'" style="margin: 5px">
+			<hr>
+			<span class="" style="margin: 5px 5px 5px 15px">
+				{{key}}
+			</span>
+			<div ng-repeat="api in value" style="margin: 10px">
+				<span ng-class="{'type-get': api.requestType == 'get', 'type-post': api.requestType == 'post', 'type-put': api.requestType == 'put', 'type-delete': api.requestType == 'delete'}" class="pg-type" style="margin: 5px">{{api.requestType}}</span>
+				<a class="" ui-sref="document.landing.content({apiObj: api, definitions: definitions})" title={{api.api}} style="color: #666">{{api.api | limitTo: 30}}{{api.api.length > 30 ? '...' : ''}}</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- <div ng-init="getJsonData()">
+    <div id="sidebar-wrapper">
+        <ul class="nav sidebar-nav" id="accordion">
+            <li class="parent_menu panel" ng-repeat="(titles, val) in apiList | orderBy: 'title' | groupBy: 'title'">
+            	
+            	<a class="parent_menu_a" style="font-weight: 900" role="button" data-toggle="collapse" data-parent="#accordion" href="#{{$index}}" aria-expanded="false" aria-controls="{{$index}}" eat-click>
+            		{{titles}}<i class="icon-pright rotate"></i>
+    			</a>
+            	<ul aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse" id="{{$index}}" aria-expanded="false" style="">
+					<li ng-repeat="(key, value) in val | groupBy: 'tags'">
+						
+						<a href="" eat-click>{{key}}</a>
+						<div ng-repeat="api in value">
+							<span ng-class="{'type-get': api.requestType == 'get', 'type-post': api.requestType == 'post', 'type-put': api.requestType == 'put', 'type-delete': api.requestType == 'delete'}" class="pg-type" >{{api.requestType}}</span>
+							<a ui-sref="document.landing.content({apiObj: api, definitions: definitions})" title={{api.api}}>{{api.api | limitTo: 20}}{{api.api.length > 20 ? '...' : ''}}</a>
+						</div>
+					</li>
+            	</ul>
+        	</li>
+        </ul>
+    </div>
+</div> -->

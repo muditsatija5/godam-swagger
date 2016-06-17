@@ -1,0 +1,4964 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Godam API",
+        "description": "Godam API Documentation for integrating godam with other applications for performing operations related to warehouse management system like inbound/outbound!",
+        "version": "v1"
+    },
+    "host": "qa2-godam.delhivery.com",
+    "schemes": [
+        "http"
+    ],
+    "basePath": "",
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/{language}/management/api/{version}/autocomplete/": {
+            "get": {
+                "summary": "Autocomplete API for multiple models",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "query to be autocompleted",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "authorization",
+                        "in": "header"
+                    },
+                    {
+                        "name": "model_name",
+                        "in": "query",
+                        "description": "name of the model for the autocompletion(FC/ST)",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "facility_num",
+                        "in": "query",
+                        "description": "name of the associated fulfillment center",
+                        "type": "string",
+                        "required": false
+                    },
+                    {
+                        "name": "client_store_id",
+                        "in": "query",
+                        "description": "for name of the associated supplier stores link with client store id",
+                        "type": "string",
+                        "required": false
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    }
+                ],
+                "tags": [
+                    "Management"
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Autocompletion fails !",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    },
+                    "200": {
+                        "description": "Autocomplete successful",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponsePass"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/management/api/{version}/userpermissions/": {
+            "get": {
+                "summary": "retrieve user permission along with the fulifillment center and station validation",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "name": "fulfillment_center_sk",
+                        "in": "query",
+                        "description": "name of the fulfillment center associated with the user",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "station",
+                        "in": "query",
+                        "description": "name of the activity station to be used by the user(QC/PACK)",
+                        "type": "string"
+                    },
+                    {
+                        "name": "version",
+                        "in": "path",
+                        "description": "version of the requested API",
+                        "type": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ]
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Userpermissions cant be retrieved",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "200": {
+                        "description": "userpermission retrieved sucessfully",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/api/password/change/": {
+            "post": {
+                "summary": "Change User Password",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "authorization",
+                        "in": "header"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "post data",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ChangePassword"
+                        }
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Password changed successfully",
+                        "schema": {
+                            "$ref": "#/definitions/200ChangePassword"
+                        }
+                    },
+                    "400": {
+                        "description": "Unable to login / password incorrect",
+                        "schema": {
+                            "$ref": "#/definitions/400ChangePassword"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/api-token-auth/": {
+            "post": {
+                "summary": "Get User Token",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "payload data",
+                        "format": "string",
+                        "required": true,
+                        "in": "body",
+                        "type": "string",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/TokenPayload"
+                        }
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token Fetched successfully",
+                        "schema": {
+                            "$ref": "#/definitions/TokenResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Unable to login with provided credentials",
+                        "schema": {
+                            "$ref": "#/definitions/403Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/api/password/recover/": {
+            "post": {
+                "summary": "API service to recover forgotten password",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "payload data",
+                        "format": "string",
+                        "required": true,
+                        "in": "body",
+                        "type": "string",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PasswordRecoverSchema"
+                        }
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recovery of password is successful",
+                        "schema": {
+                            "$ref": "#/definitions/PasswordRecoverResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "Recovery of password fails",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/layout/api/{version}/location/{location_name}/": {
+            "get": {
+                "summary": "API service for the details of the provided location detail",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "Name of the location",
+                        "name": "location_name",
+                        "required": true,
+                        "in": "path",
+                        "type": "string"
+                    },
+                    {
+                        "description": "Fulfillment Center Number",
+                        "required": true,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    }
+                ],
+                "tags": [
+                    "Layout"
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Location is not valid",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    },
+                    "412": {
+                        "description": "Invalid Post Data, Pre conditions check fail !"
+                    },
+                    "403": {
+                        "description": "Forbidden in case user not allowed to perform action!"
+                    },
+                    "500": {
+                        "description": "In case of server error due to configuration problem or invalid request."
+                    },
+                    "200": {
+                        "description": "Valid station",
+                        "schema": {
+                            "$ref": "#/definitions/LocationApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/layout/api/{version}/station/{station}/": {
+            "get": {
+                "summary": "API service for the details of the provided station",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "Name of the station to be verified(QC/PACK)",
+                        "name": "station",
+                        "required": true,
+                        "in": "path",
+                        "type": "string"
+                    },
+                    {
+                        "description": "Fulfillment Center Number",
+                        "required": true,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    }
+                ],
+                "tags": [
+                    "Layout"
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Station is not valid",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "200": {
+                        "description": "Valid station",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/api/password/reset/{token}/": {
+            "post": {
+                "summary": "API service to reset password",
+                "parameters": [
+                    {
+                        "description": "Token received in the mail for password reset",
+                        "type": "string",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "payload data",
+                        "type": "string",
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PasswordResetSchema"
+                        }
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Password reset fails",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "200": {
+                        "description": "Successfully password changed",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/procurement/api/{version}/batches/": {
+            "get": {
+                "summary": "API service for batches listing",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "Fulfillment mode",
+                        "format": "string",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "name": "fulfillment_mode"
+                    },
+                    {
+                        "description": "No of results on the page",
+                        "format": "string",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "name": "paginate_by"
+                    },
+                    {
+                        "description": "particular page you want to retrieve",
+                        "format": "string",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "name": "page"
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "start date of the date range filter(2012-02-03T20:22:22Z)",
+                        "in": "query",
+                        "format": "date-time",
+                        "name": "start_date",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "end date of the date range filter(2012-02-03T20:22:22Z)",
+                        "in": "query",
+                        "format": "date-time",
+                        "name": "end_date",
+                        "type": "string",
+                        "required": false
+                    },
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "Source of the ProcurementOrders",
+                        "required": false,
+                        "type": "string",
+                        "name": "source",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Source number of the ProcurementOrders",
+                        "required": false,
+                        "type": "string",
+                        "name": "source_number",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Batches of the particular AGN",
+                        "required": false,
+                        "type": "string",
+                        "name": "agn_id",
+                        "in": "query"
+                    },
+                    {
+                        "description": "will exclude the batches of the status RPO",
+                        "name": "eclude_rpo",
+                        "enum": [
+                            "true",
+                            "false"
+                        ],
+                        "type": "boolean",
+                        "in": "query"
+                    },
+                    {
+                        "description": "will exclude the batches if the agn associated with them is expired",
+                        "name": "exclude_expired",
+                        "enum": [
+                            "true",
+                            "false"
+                        ],
+                        "type": "boolean",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "description": "Status of the ProcurementOrders",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "name": "status"
+                    },
+                    {
+                        "description": "PO number",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "name": "po_number"
+                    }
+                ],
+                "tags": [
+                    "Procurement"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PO List is retrieved",
+                        "schema": {
+                            "$ref": "#/definitions/PoListresponse"
+                        }
+                    },
+                    "default": {
+                        "description": "PO listing unsuccessful",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/procurement/api/{version}/agn/create/": {
+            "post": {
+                "summary": "API service to create agn and agn products. User should have 'agn create' and 'agn product create' permission",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "Flow of execution (BS/CRS)",
+                        "format": "string",
+                        "required": true,
+                        "in": "query",
+                        "type": "string",
+                        "name": "flow"
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": true,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Client Store sk/name",
+                        "required": true,
+                        "type": "string",
+                        "name": "channel_id",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Post Data",
+                        "required": true,
+                        "type": "string",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/AGNCreateSchema"
+                        }
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "tags": [
+                    "Procurement"
+                ],
+                "responses": {
+                    "412": {
+                        "description": "Invalid Post Data, Pre conditions check fail !"
+                    },
+                    "403": {
+                        "description": "Forbidden in case user not allowed to perform action!"
+                    },
+                    "200": {
+                        "description": "ASN has been created",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponsePass"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/procurement/api/{version}/batch/{batch_number}/": {
+            "get": {
+                "summary": "API service for retrieving details of the PO",
+                "parameters": [
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "Status of the ProcurementOrders",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "name": "status"
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "Batch number",
+                        "name": "batch_number",
+                        "required": true,
+                        "in": "path",
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Procurement"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Details of the po fetched",
+                        "schema": {
+                            "$ref": "#/definitions/PoDetailResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "Retriving of the details failed",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/ims/api/{version}/item/": {
+            "get": {
+                "summary": "API service for retrieving list of the Item",
+                "parameters": [
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "client_store_sk",
+                        "name": "client_store_sk",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "supplier_store_sk",
+                        "name": "supplier_store_sk",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "product number of the item",
+                        "name": "prod_number",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "product name of the item",
+                        "name": "prod_name",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "serial number of the item",
+                        "name": "serial",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "serial number for multiple serial number",
+                        "name": "serial",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "location where the item is stocked",
+                        "name": "layout_location",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "pick list id",
+                        "name": "picklist_id",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "batch number to which the item is associated",
+                        "name": "batch_number",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "asn source number to which the item is associated",
+                        "name": "asn_number",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "start date of when item was last updated",
+                        "name": "date_from",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "end date of when item was last updated",
+                        "name": "date_to",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "status of the Item",
+                        "name": "status",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Item"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of the product fetched",
+                        "schema": {
+                            "$ref": "#/definitions/ItemDetailResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "Unable to retrieve the list of products ",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/ims/api/{version}/item/{serial}/": {
+            "get": {
+                "summary": "API service for retrieving details of the Item. Only user with permission 'can scan item' can perform the action",
+                "parameters": [
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "serial number of the item to be scanned",
+                        "name": "serial",
+                        "required": true,
+                        "in": "path",
+                        "type": "string"
+                    },
+                    {
+                        "description": "sk of the product to which the item belong",
+                        "name": "prod_sk",
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "flow of the item (FWD/COR)",
+                        "name": "item_flow",
+                        "in": "query",
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Item"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Details of the item of the given serial number fetched",
+                        "schema": {
+                            "$ref": "#/definitions/ItemDetailResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "Unable to retrieve item information",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/ims/api/{version}/item/edit/{serial}": {
+            "put": {
+                "summary": "Api service for updating attributes of the item",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },{
+			
+                        "name": "fulfillment_center_num",
+                        "in": "query",
+                        "description": "name of the fulfillment center associated with the user",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "version",
+                        "in": "path",
+                        "description": "version of the requested API",
+                        "type": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ]
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "flow",
+                        "required": true,
+                        "type": "string",
+                        "name": "flow",
+                        "in": "query"
+                    },
+                    {
+                        "description": "serial number of the item to be updated",
+                        "required": true,
+                        "type": "string",
+                        "name": "serial",
+                        "in": "path"
+                    },
+                    {
+                        "description": "payload data",
+                        "format": "string",
+                        "required": true,
+                        "in": "body",
+                        "type": "string",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/ItemUpdatePayload"
+                        }
+                    }
+                ],
+		"tags": [
+                   "Item"
+                ],
+		 "responses": {
+                    "default": {
+                        "description": "Unable to update item",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    },
+                    "200": {
+                        "description": "Item updated sucessfully",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponsePass"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/pcm/api/{version}/product/{prod_sk}/": {
+            "get": {
+                "summary": "API service for retrieving details of the Product",
+                "parameters": [
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "Product sk",
+                        "name": "prod_sk",
+                        "required": true,
+                        "in": "path",
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "PCM"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Details of the product fetched",
+                        "schema": {
+                            "$ref": "#/definitions/ProductDetailResponseSchema"
+                        }
+                    },
+                    "default": {
+                        "description": "Unable to retrieve the product details",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/procurement/api/{version}/accept-batch/{batch_id}/": {
+            "put": {
+                "summary": "Api service for receiving batches and updating batch status",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Flow of execution (BS/CRS)",
+                        "format": "string",
+                        "required": true,
+                        "in": "query",
+                        "type": "string",
+                        "name": "flow"
+                    },
+                    {
+                        "description": "Activity Station",
+                        "required": true,
+                        "type": "string",
+                        "name": "station",
+                        "in": "query"
+                    },
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "id of the patch to be received",
+                        "required": true,
+                        "type": "int32",
+                        "name": "batch_id",
+                        "in": "path"
+                    }
+                ],
+                "tags": [
+                    "Procurement"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully changed the status of the provided batch-id",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponsePass"
+                        }
+                    },
+                    "default": {
+                        "description": "unable to change the status of the provided batch-id",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/procurement/api/{version}/batch/create/": {
+            "post": {
+                "summary": "Api service for creating unexpected batch.User should have 'can generate po' to perform the action",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Flow of execution (BS/CRS)",
+                        "format": "string",
+                        "required": true,
+                        "in": "query",
+                        "type": "string",
+                        "name": "flow"
+                    },
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "Post Data",
+                        "required": true,
+                        "type": "string",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/BatchCreateSchema"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Procurement"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully created the unexpected batch",
+                        "schema": {
+                            "$ref": "#/definitions/UnexpectedBatchSchemaResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "unable to create the unexpected batch",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/inbound/api/{version}/serialize/": {
+            "post": {
+                "summary": "API service to serialize received items of the Procurement Order. User should have 'po receive' permission",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "Flow of execution (BS/CRS)",
+                        "format": "string",
+                        "required": true,
+                        "in": "query",
+                        "type": "string",
+                        "name": "flow"
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Activity Station",
+                        "required": false,
+                        "type": "string",
+                        "name": "station",
+                        "in": "query"
+                    },
+                    {
+                        "description": "In case profile is configuired as client/supplier/master channel and linked with multiple participants",
+                        "required": false,
+                        "type": "string",
+                        "name": "access_key",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Post Data",
+                        "required": true,
+                        "type": "string",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/POSerializeSchema"
+                        }
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "tags": [
+                    "Inbound"
+                ],
+                "responses": {
+                    "412": {
+                        "description": "Invalid Post Data, Pre conditions check fail !"
+                    },
+                    "403": {
+                        "description": "Forbidden in case user not allowed to perform action!"
+                    },
+                    "200": {
+                        "description": "Successfully serialized the received product",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponsePass"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/procurement/api/{version}/agn/": {
+            "get": {
+                "summary": "API to list agn according to filter params",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "Fulfillment center number",
+                        "format": "string",
+                        "required": true,
+                        "in": "query",
+                        "type": "string",
+                        "name": "fulfillment_center_num"
+                    },
+                    {
+                        "description": "AGN Status",
+                        "format": "string",
+                        "in": "query",
+                        "required": false,
+                        "enum": [
+                            "IP",
+                            "EXP",
+                            "CRT",
+                            "GIN",
+                            "CMP",
+                            "CAN",
+                            "EXR"
+                        ],
+                        "type": "string",
+                        "name": "status"
+                    },
+                    {
+                        "description": "Client SK",
+                        "format": "string",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "name": "client_sk"
+                    },
+                    {
+                        "description": "Supplier Store SK",
+                        "format": "string",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "name": "supplier_store_sk"
+                    },
+                    {
+                        "description": "Supplier SK",
+                        "format": "string",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "name": "supplier_sk"
+                    },
+                    {
+                        "description": "Client Store SK",
+                        "format": "string",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "name": "client_store_sk"
+                    },
+                    {
+                        "description": "start date of the date range filter(2012-02-03T20:22:22Z)",
+                        "in": "query",
+                        "format": "date-time",
+                        "name": "start_date",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "end date of the date range filter(2012-02-03T20:22:22Z)",
+                        "in": "query",
+                        "format": "date-time",
+                        "name": "end_date",
+                        "type": "string",
+                        "required": false
+                    },
+                    {
+                        "description": "Source number",
+                        "format": "string",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "name": "source_number"
+                    }
+                ],
+                "tags": [
+                    "Procurement"
+                ],
+                "responses": {
+                    "412": {
+                        "description": "Invalid Post Data, Pre conditions check fail !"
+                    },
+                    "403": {
+                        "description": "Forbidden in case user not allowed to perform action!"
+                    },
+                    "200": {
+                        "description": "successfully retrieved the list of agn",
+                        "schema": {
+                            "$ref": "#/definitions/AGNListApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/procurement/api/{version}/agn/{agn_id}/": {
+            "get": {
+                "summary": "API to get details related to provided agn id",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "AGN id",
+                        "format": "string",
+                        "required": true,
+                        "in": "path",
+                        "type": "string",
+                        "name": "agn_id"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "Fulfillment center number",
+                        "format": "string",
+                        "required": true,
+                        "in": "query",
+                        "type": "string",
+                        "name": "fulfillment_center_num"
+                    }
+                ],
+                "tags": [
+                    "Procurement"
+                ],
+                "responses": {
+                    "412": {
+                        "description": "Invalid Post Data, Pre conditions check fail !"
+                    },
+                    "403": {
+                        "description": "Forbidden in case user not allowed to perform action!"
+                    },
+                    "200": {
+                        "description": "Successfully retrieved the details of the provided agn_id",
+                        "schema": {
+                            "$ref": "#/definitions/AGNDetailSchema"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/procurement/api/{version}/batch/complete/{po_id}/": {
+            "post": {
+                "summary": "API to complete batch after receiving items",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Flow of execution (BS/CRS)",
+                        "format": "string",
+                        "required": true,
+                        "in": "query",
+                        "type": "string",
+                        "name": "flow"
+                    },
+                    {
+                        "description": "batch id",
+                        "format": "string",
+                        "required": true,
+                        "in": "path",
+                        "type": "string",
+                        "name": "po_id"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "Fulfillment center number",
+                        "format": "string",
+                        "required": true,
+                        "in": "query",
+                        "type": "string",
+                        "name": "fulfillment_center_num"
+                    }
+                ],
+                "tags": [
+                    "Procurement"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully completed batch",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponsePass"
+                        }
+                    },
+                    "default": {
+                        "description": "unable to successfully complete batch",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/procurement/api/{version}/agn-products/{agn_id}/": {
+            "get": {
+                "summary": "API for fetching Products related to a AGN",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "Fulfillment Center Number",
+                        "required": true,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "Query filter on product name/sku",
+                        "required": true,
+                        "type": "string",
+                        "name": "query",
+                        "in": "query"
+                    },
+                    {
+                        "description": "AGN Id",
+                        "required": true,
+                        "type": "string",
+                        "name": "agn_id",
+                        "in": "path"
+                    },
+                    {
+                        "description": "Page Number",
+                        "required": false,
+                        "type": "string",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "tags": [
+                    "Procurement"
+                ],
+                "responses": {
+                    "default": {
+                        "description": " AGN Product Details API",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    },
+                    "200": {
+                        "description": "API Details Response",
+                        "schema": {
+                            "$ref": "#/definitions/PoProdApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/procurement/api/{version}/agn/cancel/{agn_id}/": {
+            "put": {
+                "summary": "API service for cancelling of agn. User having permission 'can cancel agn' can perform the action",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "In case profile is configuired as client/supplier/master channel and linked with multiple participants",
+                        "required": false,
+                        "type": "string",
+                        "name": "access_key",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "Id of the AGN to be cancelled",
+                        "name": "agn_id",
+                        "in": "path",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Procurement"
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Agn cancellation failed",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    },
+                    "200": {
+                        "description": "Agn cancelled successfully",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponsePass"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/inbound/api/{version}/receive/": {
+            "post": {
+                "summary": "API service to receive items of the Procurement Order. User should have 'po receive' permission",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "Flow of execution (BS/CRS)",
+                        "format": "string",
+                        "required": true,
+                        "in": "query",
+                        "type": "string",
+                        "name": "flow"
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Activity Station",
+                        "required": false,
+                        "type": "string",
+                        "name": "station",
+                        "in": "query"
+                    },
+                    {
+                        "description": "In case profile is configuired as client/supplier/master channel and linked with multiple participants",
+                        "required": false,
+                        "type": "string",
+                        "name": "access_key",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Post Data",
+                        "required": true,
+                        "type": "string",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/POReceiveSchema"
+                        }
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "tags": [
+                    "Inbound"
+                ],
+                "responses": {
+                    "412": {
+                        "description": "Invalid Post Data, Pre conditions check fail !"
+                    },
+                    "403": {
+                        "description": "Forbidden in case user not allowed to perform action!"
+                    },
+                    "200": {
+                        "description": "Successfully PO Received",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponsePass"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/management/api/{version}/userprofile/": {
+            "get": {
+                "summary": "API for retriving userprofile along with the FC'associated with the user",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "default": {
+                        "description": "UserProfile retrieving failed",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    },
+                    "200": {
+                        "description": "UserProfile retrieving successful"
+                    },
+                    "schema": {
+                        "$ref": "#/definitions/UserProfileResponse"
+                    }
+                }
+            }
+        },
+        "/{language}/procurement/api/{version}/po-products/{batch_id}/": {
+            "get": {
+                "summary": "API for fetch po related po products",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "Fulfillment Center Number",
+                        "required": true,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "Query filter on product name/sku",
+                        "required": true,
+                        "type": "string",
+                        "name": "query",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Procurement Order Id",
+                        "required": true,
+                        "type": "string",
+                        "name": "batch_id",
+                        "in": "path"
+                    },
+                    {
+                        "description": "Page Number",
+                        "required": false,
+                        "type": "string",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "tags": [
+                    "Procurement"
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Procurement Order Products Details API",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    },
+                    "200": {
+                        "description": "API Details Response",
+                        "schema": {
+                            "$ref": "#/definitions/PoProdApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/api/auth/{version}/login/{backend}/": {
+            "post": {
+                "summary": "Get User Token using google provided access token",
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Social Auth Backend",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "google-oauth2"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "backend"
+                    },
+                    {
+                        "description": "Application ID/Name",
+                        "format": "string",
+                        "required": true,
+                        "in": "header",
+                        "type": "string",
+                        "name": "APPLICATION"
+                    },
+                    {
+                        "description": "data payload",
+                        "format": "string",
+                        "required": true,
+                        "in": "body",
+                        "type": "string",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/SocialAuthPayload"
+                        }
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token Fetched successfully",
+                        "schema": {
+                            "$ref": "#/definitions/SocialAuthSuccessResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Unable to login with provided credentials",
+                        "schema": {
+                            "$ref": "#/definitions/403Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request in case of missing informations!",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/wms/api/{version}/print/barcode/": {
+            "post": {
+                "summary": "API end point to print barcodes for multiple content types",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/pdf",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "Payload Data",
+                        "format": "string",
+                        "required": true,
+                        "in": "body",
+                        "type": "string",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/BarCodeAPIPayload"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Generic APIs"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Barcode generated successfully !"
+                    }
+                }
+            }
+        },
+        "/{language}/api/device/{version}/login/": {
+            "post": {
+                "summary": "API endpoint to authenticate user against username and password from devices or other applications",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Application ID/Name",
+                        "format": "string",
+                        "required": true,
+                        "in": "header",
+                        "type": "string",
+                        "name": "APPLICATION"
+                    },
+                    {
+                        "description": "Payload Data",
+                        "format": "string",
+                        "required": true,
+                        "in": "body",
+                        "type": "string",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/GetTokenSchema"
+                        }
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User logged in successfully",
+                        "schema": {
+                            "$ref": "#/definitions/DeviceLoginResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/fclkp/api/{version}/management-lookup/{id}/": {
+            "get": {
+                "summary": "API to get detials of management lookup with required id",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "management lookup id",
+                        "format": "string",
+                        "required": true,
+                        "in": "path",
+                        "type": "string",
+                        "name": "id"
+                    }
+                ],
+                "tags": [
+                    "FCLKP"
+                ],
+                "responses": {
+                    "412": {
+                        "description": "Invalid Post Data, Pre conditions check fail !"
+                    },
+                    "403": {
+                        "description": "Forbidden in case user not allowed to perform action!"
+                    },
+                    "400": {
+                        "description": "When invalid id is being provided."
+                    },
+                    "200": {
+                        "description": "Successfully retrieved the details of the provided management lookup",
+                        "schema": {
+                            "$ref": "#/definitions/ManagementLookUpSchema"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/pcm/api/{version}/rules/": {
+            "post": {
+                "summary": "API to get list of rules with required parameters",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "Flow of execution (BS/CRS)",
+                        "format": "string",
+                        "required": true,
+                        "in": "query",
+                        "type": "string",
+                        "name": "flow"
+                    },
+                    {
+                        "description": "Fulfillment center number",
+                        "format": "string",
+                        "required": true,
+                        "in": "query",
+                        "type": "string",
+                        "name": "fulfillment_center_num"
+                    },
+                    {
+                        "description": "Post Data",
+                        "required": true,
+                        "type": "string",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/RuleFetchSchema"
+                        }
+                    }
+                ],
+                "tags": [
+                    "PCM"
+                ],
+                "responses": {
+                    "412": {
+                        "description": "Invalid Post Data, Pre conditions check fail !"
+                    },
+                    "403": {
+                        "description": "Forbidden in case user not allowed to perform action!"
+                    },
+                    "500": {
+                        "description": "In case of server error due to configuration problem or invalid request."
+                    },
+                    "200": {
+                        "description": "Successfully retrieved the details of the provided agn_id",
+                        "schema": {
+                            "$ref": "#/definitions/RuleListResponseSchema"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/api/device/{version}/logout/": {
+            "post": {
+                "summary": "API endpoint to register user's logout state",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    }
+                ],
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User logged out successfully",
+                        "schema": {
+                            "$ref": "#/definitions/DeviceLogoutResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/inbound/api/{version}/quality-check/": {
+            "post": {
+                "summary": "Api service for Quality Check of an item.User should have 'can_qc_items' permission to perform the action",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Flow of execution (BS/CRS)",
+                        "format": "string",
+                        "required": true,
+                        "in": "query",
+                        "type": "string",
+                        "name": "flow"
+                    },
+                    {
+                        "description": "Activity Station",
+                        "required": true,
+                        "type": "string",
+                        "name": "station",
+                        "in": "query"
+                    },
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "post data",
+                        "required": true,
+                        "type": "string",
+                        "in": "body",
+                        "name": "post_data",
+                        "schema": {
+                            "$ref": "#/definitions/QualityCheckPayload"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Inbound"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully updated the status of the item based on QC result",
+                        "schema": {
+                            "$ref": "#/definitions/QualityCheckResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "unable to perform the quality action on the given serial number",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/pcm/api/{version}/products/": {
+            "get": {
+                "summary": "API service for retrieving list of the Products",
+                "parameters": [
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "client_store_sk",
+                        "name": "client_store",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "supplier_store_sk",
+                        "name": "supplier_store",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "product number",
+                        "name": "number",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "name of the product",
+                        "name": "name",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "products are active or not",
+                        "name": "active",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "enum": [
+                            "true",
+                            "false"
+                        ]
+                    }
+                ],
+                "tags": [
+                    "PCM"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of the product fetched",
+                        "schema": {
+                            "$ref": "#/definitions/ProductListResponseSchema"
+                        }
+                    },
+                    "default": {
+                        "description": "Unable to retrieve the list of products ",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        },
+         "/{language}/pcm/api/{version}/productchannelmapping/": {
+            "get": {
+                "summary": "API service for retrieving list of the Product channel mapping",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "listing_id",
+                        "name": "listing_id",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "name of the master channel",
+                        "name": "channel",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "sk of the product",
+                        "name": "product_id",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "sk of the client-store",
+                        "name": "client_store_id",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "description": "seller sku on channel",
+                        "name": "client_store_seller_sku",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },{
+                        "description": "channel sku",
+                        "name": "client_store_product_number",
+                        "in": "query",
+                        "type": "string",
+                        "required": false
+                    },
+                    {
+                        "description": "products are active or not",
+                        "name": "active",
+                        "required": false,
+                        "in": "path",
+                        "type": "boolean",
+                        "enum": [
+                            true,
+                            false
+                        ]
+                    }
+                ],
+                "tags": [
+                    "PCM"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of the productclientstore fetched",
+                        "schema": {
+                            "$ref": "#/definitions/ProductclientstoreResponseSchema"
+                        }
+                    },
+                    "default": {
+                        "description": "Unable to retrieve the list of productclientstore ",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/pcm/api/{version}/product/edit/{prod_sk}": {
+            "put": {
+                "summary": "Api service for updating attributes of the product",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "name": "fulfillment_center_num",
+                        "in": "query",
+                        "description": "name of the fulfillment center associated with the user",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "version",
+                        "in": "path",
+                        "description": "version of the requested API",
+                        "type": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ]
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "serial number of the product to be updated",
+                        "required": true,
+                        "type": "string",
+                        "name": "prod_sk",
+                        "in": "path"
+                    },
+                    {
+                        "description": "payload data",
+                        "format": "string",
+                        "required": true,
+                        "in": "body",
+                        "type": "string",
+                        "name": "body",
+                        "schema": {
+                           "$ref":"#/definitions/ProductUpdatePayload"
+                        }
+                    }
+                ],
+                "tags": [
+                    "PCM"
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Unable to update product",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    },
+                    "200": {
+                        "description": "Product updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponsePass"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/inbound/api/{version}/put-away/": {
+            "post": {
+                "summary": "Api service for put away of an item after its QC has been completed. User should have 'can_put_item' permission to perform the action",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Flow of execution (BS/CRS)",
+                        "format": "string",
+                        "required": true,
+                        "in": "query",
+                        "type": "string",
+                        "name": "flow"
+                    },
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "post data",
+                        "required": true,
+                        "type": "string",
+                        "in": "body",
+                        "name": "post_data",
+                        "schema": {
+                            "$ref": "#/definitions/PutAwayPayload"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Inbound"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully updated the status of the item based on QC result",
+                        "schema": {
+                            "$ref": "#/definitions/QualityCheckResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "unable to perform the quality action on the given serial number",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        },
+        "/{language}/pcm/api/{version}/productchannelmapping/edit/{prod_sk}/": {
+            "put": {
+                "summary": "Api service for updating attributes of the product channel mapping",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "name": "version",
+                        "in": "path",
+                        "description": "version of the requested API",
+                        "type": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ]
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "sk of the product whose mapping to be updated",
+                        "required": true,
+                        "type": "string",
+                        "name": "prod_sk",
+                        "in": "path"
+                    },
+                    {
+                        "description": "payload data",
+                        "format": "string",
+                        "required": true,
+                        "in": "body",
+                        "type": "string",
+                        "name": "body",
+                        "schema": {
+                           "$ref":"#/definitions/ProductChannelMappingUpdatePayload"
+                        }
+                    }
+                ],
+                "tags": [
+                    "PCM"
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Unable to update product channel mapping",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    },
+                    "200": {
+                        "description": "Product channel mapping updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponsePass"
+                        }
+                    }
+                }
+            }
+        },
+         "/{language}/pcm/api/{version}/productinventory/": {
+            "get": {
+                "summary": "API service for retrieving inventory of the products",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "path",
+                        "description": "User Locale",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "ar",
+                            "fr",
+                            "it",
+                            "es",
+                            "sv"
+                        ]
+                    },
+                    {
+                        "description": "FulfillmentCenter Access Key, Can be skipped in case user is tagged with single fc",
+                        "required": false,
+                        "type": "string",
+                        "name": "fulfillment_center_num",
+                        "in": "query"
+                    },
+                    {
+                        "description": "API Version",
+                        "format": "string",
+                        "required": true,
+                        "enum": [
+                            "v1"
+                        ],
+                        "in": "path",
+                        "type": "string",
+                        "name": "version"
+                    },
+                    {
+                        "description": "Authorization",
+                        "required": true,
+                        "type": "string",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "number of the product whose inventory to be fetched",
+                        "name": "prod_sk    ",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "PCM"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product inventory fetched successfully",
+                        "schema": {
+                            "$ref": "#/definitions/ProductInventoryResponseSchema"
+                        }
+                    },
+                    "default": {
+                        "description": "Unable to fetch the product inventory ",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponseFail"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "TokenAuthentication": {
+            "type": "TokenAuthentication",
+            "name": "TokenAuthentication",
+            "in": "header"
+        }
+    },
+    "definitions": {
+        "DeviceLoginResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "token": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "ProductInventoryResponseSchema" :{
+            "type": "object",
+            "properties": {
+                "data": {
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "prod_number": {
+                                    "type": "object",
+                                    "properties": {
+                                        "available": {
+                                            "type": "integer"
+                                        },
+                                        "held": {
+                                            "type": "integer"
+                                        },
+                                        "prod_number": {
+                                            "type": "string"
+                                        },
+                                        "hand": {
+                                            "type": "integer"
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "success": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "message": {
+                    "type": "string"
+                },
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/errors"
+                    }
+                }
+            }
+        },
+        "ItemUpdatePayload": {
+            "xml": {
+                "name": "ItemUpdateSchema"
+            },
+            "type": "object",
+            "properties": {
+                "length": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "length of the item to be updated"
+                },
+                 "width": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "width of the item to be updated"
+                },
+                "height": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "height of the item to be updated"
+                },
+                "mrp": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "mrp of the item to be updated"
+                },
+                 "weight": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "weight of the item to be updated"
+                },
+                "secondary_serial_one": {
+                    "type": "number",
+                    "description": "weight of the item to be updated"
+                },
+                "expire_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "default": "2018-10-23T22:22:22Z"
+                }
+            }
+        },
+        "ProductUpdatePayload": {
+            "xml": {
+                "name": "ProductUpdateSchema"
+            },
+            "type": "object",
+            "properties": {
+                "length": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "length of the item to be updated"
+                },
+                 "width": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "width of the item to be updated"
+                },
+                "height": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "height of the item to be updated"
+                },
+                "mrp": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "mrp of the item to be updated"
+                },
+                 "weight": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "weight of the item to be updated"
+                },
+                "currency": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "currency if wants to be updated"
+                },
+                "dimension_unit": {
+                    "type": "string"
+                }
+            }
+        },
+        "ProductChannelMappingUpdatePayload": {
+            "xml": {
+                "name": "ProductChannelMappingUpdateSchema"
+            },
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean",
+                    "enum": [
+                        true,
+                        false],
+                    "description": "length of the item to be updated"
+                },
+                 "allocation_operation": {
+                    "type": "string",
+                    "description": "choice field",
+                    "enum": [
+                        "%",
+                        ""
+                    ]
+                 },
+                "allocation_number": {
+                    "type": "integer",
+                    "description": "available stock must be positive integer"
+                }
+            }
+        },
+        "DeviceLogoutResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "BarCodeAPIPayload": {
+            "xml": {
+                "name": "BarCodeAPIPayload"
+            },
+            "type": "object",
+            "properties": {
+                "data": {
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/BarCodePayLoadSchema"
+                        }
+                    }
+                }
+            }
+        },
+        "BarCodePayLoadSchema": {
+            "xml": {
+                "name": "BarCodePayLoadSchema"
+            },
+            "type": "object",
+            "properties": {
+                "barcode_of": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Name of entity which required to be printed"
+                },
+                "count": {
+                    "type": "integer",
+                    "required": true,
+                    "description": "Number of barcodes to be printed"
+                },
+                "extra_info": {
+                    "type": "array",
+                    "items": {
+                    }
+                }
+            }
+        },
+        "ItemDetailResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "weight": {
+                                    "type": "integer"
+                                },
+                                "wight_unit": {
+                                    "type": "string"
+                                },
+                                "length": {
+                                    "type": "integer"
+                                },
+                                "width": {
+                                    "type": "integer"
+                                },
+                                "height": {
+                                    "type": "integer"
+                                },
+                                "serial": {
+                                    "type": "string"
+                                },
+                                "secondary_serial_one": {
+                                    "type": "string"
+                                },
+                                "mrp": {
+                                    "type": "string"
+                                },
+                                "expire_at": {
+                                    "type": "string "
+                                },
+                                "expiry_date": {
+                                    "type": "string",
+                                    "format": "Date-Time"
+                                },
+                                "prod_sk": {
+                                    "type": "string"
+                                },
+                                "prod_sku": {
+                                    "type": "string"
+                                },
+                                 "expiry_date": {
+                                    "type": "string",
+                                    "format": "Date-Time"
+                                },
+                                "prod_sk": {
+                                    "type": "string"
+                                },
+                                "prod_sku": {
+                                    "type": "string"
+                                },
+                                "expiry_date": {
+                                    "type": "string",
+                                    "format": "Date-Time"
+                                },
+                                "layout_location": {
+                                    "type": "string"
+                                },
+                                "dimensions_unit": {
+                                    "type": "string"
+                                },
+                                "mgmnt_lkp": {
+                                    "type": "integer"
+                                },
+                                "order_line": {
+                                    "type": "integer"
+                                },
+                                "order_line_product": {
+                                    "type": "string"
+                                },
+                                "flow": {
+                                    "type": "string"
+                                },
+                                "picklist": {
+                                    "type": "integer"
+                                },
+                                "picked_at": {
+                                    "type": "string",
+                                    "format": "Date-Time"
+                                },
+                                "qc_at": {
+                                    "type": "string",
+                                    "format": "Date-Time"
+                                },
+                                "packed_at": {
+                                    "type": "string",
+                                    "format": "Date-Time"
+                                },
+                                "rts_at": {
+                                    "type": "string",
+                                    "format": "Date-Time"
+                                },
+                                "shipped_at": {
+                                    "type": "string",
+                                    "format": "Date-Time"
+                                },
+                                "tbp_at": {
+                                    "type": "string",
+                                    "format": "Date-Time"
+                                },
+                                "hold_at": {
+                                    "type": "string",
+                                    "format": "Date-Time"
+                                },
+                                "disposed_at": {
+                                    "type": "string",
+                                    "format": "Date-Time"
+                                },
+                                "damaged_at": {
+                                    "type": "string",
+                                    "format": "Date-Time"
+                                }
+                            }
+                        }
+                    }
+                },
+                "success": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "message": {
+                    "type": "string"
+                },
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/errors"
+                    }
+                }
+            }
+        },
+        "PoProdApiResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/PaginatedDataResponse"
+                        }
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "errors": {
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/errors"
+                        }
+                    }
+                }
+            }
+        },
+        "PaginatedDataResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "string"
+                },
+                "next": {
+                    "type": "integer"
+                },
+                "previous": {
+                    "type": "integer"
+                },
+                "results": {
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/EmptyResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "EmptyResponse": {
+            "type": "object"
+        },
+        "ApiResponseFail": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "list"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "errors": {
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/errors"
+                        }
+                    }
+                }
+            }
+        },
+        "LocationApiResponse": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "fulfillment_center_sk": {
+                    "type": "string"
+                },
+                "location_type": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "zone": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "string"
+                },
+                "bin_number": {
+                    "type": "string"
+                },
+                "size_code": {
+                    "type": "string"
+                },
+                "bay": {
+                    "type": "string"
+                }
+            }
+        },
+        "ApiResponsePass": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "list"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "errors": {
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/errors"
+                        }
+                    }
+                }
+            }
+        },
+        "ProductListResponseSchema": {
+            "type": "object",
+            "properties" : {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "number": {
+                                "type": "string"
+                            },
+                            "client_store": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/errors"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean",
+                    "default": true
+                }
+            }
+        },
+        "ProductclientstoreResponseSchema": {
+            "type": "object",
+            "properties" : {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "listing_id": {
+                                "type": "integer"
+                            },
+                            "allocation_number": {
+                                "type": "string"
+                            },
+                            "allocation_operation": {
+                                "type": "string"
+                            },
+                            "client_store_seller_sku": {
+                                "type": "string"
+                            },
+                            "client_store_product_number": {
+                                "type": "string"
+                            },
+                            "product_number": {
+                                "type": "string"
+                            },
+                            "client_store_name": {
+                                "type": "string"
+                            },
+                            "channel": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/errors"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean",
+                    "default": true
+                }
+            }
+        },
+        "ProductDetailResponseSchema": {
+            "type": "object",
+            "properties" : {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "number": {
+                                "type": "string"
+                            },
+                            "pcms_id": {
+                                "type": "integer"
+                            },
+                            "id": {
+                                "type": "integer"
+                            },
+                            "width": {
+                                "type": "number",
+                                "format": "float"
+                            },
+                            "height": {
+                                "type": "number",
+                                "format": "float"
+                            },
+                             "length": {
+                                "type": "number",
+                                "format": "float"
+                            },
+                             "width_unit": {
+                                "type": "string"
+                            },
+                            "client_store": {
+                                "type": "string"
+                            },
+                            "supplier_store": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/errors"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean",
+                    "default": true
+                }
+            }
+
+        },
+        "UnexpectedBatchSchemaResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties":{
+                        "po_number":{
+                            "type": "string"
+                        },
+                        "po_id":{
+                            "type":"integer"
+                        }
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "agn":{
+                    "type": "boolean"
+                },
+                "errors": {
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/errors"
+                        }
+                    }
+                }
+            }
+        },
+        "403Response": {
+            "xml": {
+              "name": "403Response"
+            },
+            "type": "object",
+            "properties": {
+                "key":{
+                    "description" : "Error message",
+                    "type": "string",
+                    "required": true
+                }
+            }
+        },
+        "ChangePassword": {
+            "xml": {
+              "name": "ChangePassword"
+            },
+            "type": "object",
+            "properties": {
+                "current_password":{
+                    "description" : "User's Current Password",
+                    "type": "string",
+                    "required": true
+                },
+                "password1": {
+                    "description" : "Password field 1",
+                    "type": "string",
+                    "required": true,
+                    "format": "password"
+                },
+                "password2": {
+                    "description" : "Password field 2, Should match with password1",
+                    "type": "string",
+                    "required": true,
+                    "format": "password"
+                }
+            }
+        },
+        "400ChangePassword": {
+            "xml": {
+              "name": "400ChangePassword"
+            },
+            "type": "object"
+        },
+        "200ChangePassword": {
+            "xml": {
+              "name": "200ChangePassword"
+            },
+            "type": "object",
+            "properties": {
+                "message": {
+                    "description" : "Success Message",
+                    "type": "string",
+                    "required": true
+                },
+                "success": {
+                    "description" : "Flag True/False",
+                    "type": "boolean"
+                }
+            }
+        },
+        "TokenResponse": {
+            "xml": {
+              "name": "TokenResponse"
+            },
+            "type": "object",
+            "properties": {
+                "token":{
+                    "description" : "user token",
+                    "type": "string",
+                    "required": true,
+                    "name":"token"
+                }
+            }
+        },
+        "GetTokenSchema": {
+            "xml": {
+              "name": "GetTokenSchema"
+            },
+            "type": "object",
+            "properties": {
+                "username":{
+                    "description" : "UserName",
+                    "type": "string",
+                    "required": true
+                },
+                "password": {
+                    "type": "string",
+                    "required": true,
+                    "format": "password"
+                }
+            }
+        },
+        "PasswordRecoverSchema": {
+          "xml": {
+              "name": "PasswordRecoverPayload"
+          },
+            "type": "object",
+            "properties": {
+                "email":{
+                    "description" :" email of the user",
+                    "type": "string",
+                    "required": true
+                },
+                "site": {
+                    "type":"string",
+                    "required": true
+
+                }
+            }
+        },
+        "PasswordRecoverResponse": {
+            "type":"object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/errors"
+                    }
+                }
+            }
+
+        },
+        "PoDetailResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "data":{
+                    "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/PoDetailSuccessfulSchema"
+                        }
+                },
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/errors"
+                    }
+                }
+            }
+        },
+        "ManagementLookUpSchema": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "client_sk": {
+                    "type": "string"
+                },
+                "client_name": {
+                    "type": "string"
+                },
+                "supplier_sk": {
+                    "type": "string"
+                },
+                "supplier_name": {
+                    "type": "string"
+                },
+                "fulfillment_center_sk": {
+                    "type": "string"
+                },
+                "master_channel_id": {
+                    "type": "string"
+                },
+                "master_channel_name": {
+                    "type": "string"
+                },
+                "client_store_name": {
+                    "type": "string"
+                },
+                "supplier_name": {
+                    "type": "string"
+                },
+                "fulfillment_center_name": {
+                    "type": "string"
+                },
+                "supplier_store_name": {
+                    "type": "string"
+                },
+                "client_name": {
+                    "type": "string"
+                },
+                "supplier_store_sk": {
+                    "type": "string"
+                },
+                "client_store_sk": {
+                    "type": "string"
+                }
+            }
+        },
+        "RuleFetchSchema": {
+            "type": "object",
+            "properties": {
+                "input_parameters": {
+                    "required": true,
+                    "type": "array",
+                    "items": {
+                         "$ref": "#/definitions/RuleFetchParamSchema"
+                    }
+                }
+            }
+        },
+        "RuleFetchParamSchema": {
+            "type": "object",
+            "properties": {
+                "activity": {
+                    "required": true,
+                    "type": "string",
+                    "description": "activity to be perfomed"
+                },
+                "flow": {
+                    "type": "string",
+                    "description": "item flow, for eg BS"
+                },
+                "clientstore_sk": {
+                    "type": "string",
+                    "description": "client store sk"
+                },
+                "clientparty_sk": {
+                    "type": "string",
+                    "description": "client party sk"
+                },
+                "supplierstore_sk": {
+                    "type": "string",
+                    "description": "supplier store sk"
+                },
+                "supplierparty_sk": {
+                    "type": "string",
+                    "description": "supplier party sk"
+                },
+                "product": {
+                    "type": "string",
+                    "description": "product pcms id"
+                },
+                "product_type": {
+                    "type": "string",
+                    "description": "product type from pcms"
+                },
+                "category": {
+                    "type": "string",
+                    "description": "product category"
+                },
+                "master_channel": {
+                    "type": "string"
+                }
+            }
+        },
+        "BatchCreateSchema": {
+            "type": "object",
+            "properties": {
+                "agn_id": {
+                    "type": "integer"
+                },
+                "client_store_sk": {
+                    "type": "string"
+                },
+                "supplier_store_sk": {
+                    "type": "string"
+                },
+                "source": {
+                    "type": "string"
+                },
+                "source_number": {
+                    "type": "string"
+                },
+                "products":{
+                    "type":"array",
+                    "items":{
+                        "type": "object",
+                        "properties": {
+                            "prod_sk": {
+                                "type": "string",
+                                "description": "sk of the product to be added"
+                            },
+                            "product_qty": {
+                                "type": "integer",
+                                "description": "quantity of product to be added"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "PoDetailSuccessfulSchema": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                },
+                "source": {
+                    "type": "string"
+                },
+                "flow": {
+                    "type": "string"
+                },
+                "po_invoice_number": {
+                    "type": "string"
+                },
+                "supplier_invoice": {
+                    "type": "string"
+                },
+                "product_qty": {
+                    "type": "int32"
+                },
+                "client_name": {
+                    "type": "string"
+                },
+                "client_store_name": {
+                    "type": "string"
+                },
+                "supplier_name": {
+                    "type": "string"
+                },
+                "supplier_store_name": {
+                    "type": "string"
+                },
+                "mgmnt_lkp": {
+                    "type": "integer"
+                },
+                "po_products": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProductDetailSchema"
+                    }
+                }
+            }
+        },
+        "ProductDetailSchema": {
+            "type": "object",
+            "properties": {
+                "prod_name": {
+                    "description": "Product name",
+                    "type": "string"
+                },
+                "prod_num": {
+                    "description": "Product number",
+                    "type": "integer"
+                },
+                "prod_sk": {
+                    "type": "string"
+                },
+                "qc_acc_qty": {
+                    "description": "No of accepted quantities of the PO",
+                    "type": "integer"
+                }
+            }
+        },
+        "PoListresponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "sucess": {
+                    "type": "boolean"
+                },
+                "data":{
+                    "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/PoListSucessful"
+                        }
+                },
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/errors"
+                    }
+                }
+            }
+        },
+        "PoListSucessful": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "description": "total count",
+                    "type": "integer"
+                },
+                "next": {
+                    "description": "Link for the next results",
+                    "type": "string"
+                },
+                "previous": {
+                    "description":" Link for the previous results",
+                    "type": "string"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PoListResultSchema"
+                    }
+                }
+            }
+        },
+        "PoListResultSchema": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                },
+                "source": {
+                    "type": "string"
+                },
+                "flow": {
+                    "type": "string"
+                },
+                "po_invoice_number": {
+                    "type": "string"
+                },
+                "supplier_invoice": {
+                    "type": "string"
+                },
+                "product_qty": {
+                    "type": "integer"
+                },
+                "qc_acc_qty": {
+                    "type": "integer"
+                },
+                "qc_rej_qty": {
+                    "type": "integer"
+                },
+                "hold_qty": {
+                    "type": "integer"
+                },
+                "accepted_qty": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "product_qty": {
+                    "type": "integer"
+                },
+                "client_store_name":{
+                    "type": "string"
+                },
+                "client_name":{
+                    "type": "string"
+                },
+                "supplier_store_name":{
+                    "type": "string"
+                },
+                "supplier_name":{
+                    "type": "string"
+                },
+                "raised_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "mgmnt_lkp":{
+                    "type": "integer"
+                },
+                "agn": {
+                    "type": "integer"
+                },
+                "source": {
+                    "type": "string"
+                }
+            }
+        },
+        "RuleListResponseSchema": {
+            "type": "object",
+            "properties": {
+                "activity_name": {
+                    "description": "name of the activity for whih the request was raised",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RuleListSchema"
+                    }
+                 }
+             }
+         },
+         "RuleListSchema": {
+            "type": "object",
+            "properties": {
+                "reasons": {
+                    "description": "list of reason",
+                    "type": "array",
+            "items": {
+                        "$ref": "#/definitions/RuleCodeSchema"
+             }
+                },
+                "instructions": {
+                    "description": "list of instructions",
+                    "type": "array",
+            "items": {
+                        "$ref": "#/definitions/RuleCodeSchema"
+                    }
+                },
+                "mandatory_fields": {
+                    "description":" list of all mandatory fields",
+                    "type": "array",
+            "items": []
+                },
+                "optional_fields": {
+                    "type": "array",
+            "items": [],
+                    "description":" list of all optional fields"
+                }
+            }
+        },
+        "RuleCodeSchema": {
+            "type": "object",
+            "properties": {
+                "text":{
+                    "type": "string",
+                    "description": "text of the code, it maybe instrcution or reason"
+                },
+                "code":{
+                    "type": "string",
+                    "description": "code of the instruction/reason"
+                }
+            }
+        },
+        "AGNListResultSchema": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "product_qty": {
+                    "type": "integer"
+                },
+                "accepted_qty": {
+                    "type": "integer"
+                },
+                "hold_qty": {
+                    "type": "integer"
+                },
+                "qc_acc_qty": {
+                    "type": "integer"
+                },
+                "qc_rej_qty": {
+                    "type": "integer"
+                },
+                "overages": {
+                    "type": "integer"
+                },
+                "shortages": {
+                    "type": "integer"
+                },
+                "source_number": {
+                    "type": "string"
+                },
+                "invoice_qty": {
+                    "type": "integer"
+                },
+                "client_store_sk": {
+                    "type": "string"
+                },
+                "fulfillment_center_sk": {
+                    "type": "string"
+                },
+                "completed_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "cancelled_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "mgmnt_lkp": {
+                    "type": "integer"
+                },
+                "completed_by": {
+                    "type": "string"
+                },
+                "mgmnt_lkp": {
+                    "type": "integer"
+                }
+
+            }
+        },
+        "AGNListSucessful": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "description": "total AGN count",
+                    "type": "integer"
+                },
+                "next": {
+                    "description": "Link for the next results",
+                    "type": "string"
+                },
+                "previous": {
+                    "description":" Link for the previous results",
+                    "type": "string"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AGNListResultSchema"
+                    }
+                }
+            }
+        },
+        "MgmntLkpSchema": {
+            "type": "object",
+            "properties": {
+                "client_store_name":{
+                    "type": "string"
+                },
+                "client_name":{
+                    "type": "string"
+                },
+                "supplier_store_name":{
+                    "type": "string"
+                },
+                "supplier_name":{
+                    "type": "string"
+                },
+                "fulfillment_center_name":{
+                    "type": "string"
+                }
+            }
+        },
+        "AGNDetailSchema": {
+            "type": "object",
+            "properties": {
+                "source_number": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "expired_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "expired": {
+                    "type": "boolean"
+                },
+                "mgmnt_lkp": {
+                    "type": "integer"
+                }
+            }
+        },
+        "AGNListApiResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "sucess": {
+                    "type": "boolean"
+                },
+                "data":{
+                    "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/AGNListSucessful"
+                        }
+                },
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/errors"
+                    }
+                }
+            }
+        },
+        "passwordRecoverFail": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type" : "string"
+                },
+                "success" :{
+                  "type": "boolean"
+                },
+                "errors": {
+                    "type": "array",
+                    "items" : {
+                        "$ref": "#/definitions/errors"
+                    }
+                }
+            }
+        },
+        "PasswordResetSchema": {
+          "xml": {
+              "name": "PasswordResetPayload"
+          },
+            "type": "object",
+            "properties": {
+                "password1":{
+                    "description" :" new password",
+                    "type": "string",
+                    "required": true
+                },
+                "password2": {
+                    "description": "confirmation of new password",
+                    "type":"string",
+                    "required": true
+
+                }
+            }
+        },
+        "TokenPayload": {
+          "xml": {
+              "name": "ApiTokenPayload"
+          },
+            "type": "object",
+            "properties": {
+                "username":{
+                    "description" :"username of the user",
+                    "type": "string",
+                    "required": true
+                },
+                "password": {
+                    "description": "password of the user",
+                    "type":"string",
+                    "required": true
+
+                }
+            }
+        },
+        "SocialAuthPayload": {
+          "xml": {
+              "name": "SocialAuthPayload"
+          },
+            "type": "object",
+            "properties": {
+                "access_token":{
+                    "description" :"Access Token provided by google",
+                    "type": "string",
+                    "required": true
+                }
+            }
+        },
+        "SocialAuthResponse": {
+            "xml": {
+              "name": "SocialAuthResponse"
+            },
+            "type": "object",
+            "properties": {
+                "token": {
+                    "description" : "user token",
+                    "type": "string",
+                    "required": true,
+                    "name":"token"
+                },
+                "is_new": {
+                    "description" : "New User",
+                    "type": "boolean",
+                    "required": true,
+                    "name":"is_new"
+                },
+                "username": {
+                    "description" : "User Details",
+                    "type": "string",
+                    "required": true,
+                    "name": "username"
+                },
+                "name": {
+                    "description" : "User Name",
+                    "type": "string",
+                    "required": true,
+                    "name": "name"
+                }
+            }
+        },
+        "SocialAuthSuccessResponse": {
+            "xml": {
+              "name": "SocialAuthSuccessResponse"
+            },
+            "type": "object",
+            "properties": {
+                "data": {
+                    "schema": {
+                        "$ref": "#/definitions/SocialAuthResponse"
+                    }
+                },
+                "success": {
+                    "type": "boolean",
+                    "name": "success"
+                }
+            }
+        },
+        "create_agn_prod_list": {
+            "xml": {
+                "name": "create_agn_prod_list"
+            },
+            "type": "object",
+            "properties": {
+                "prod_number": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "string"
+                }
+            }
+        },
+        "errors": {
+            "xml": {
+                "name": "errors"
+            },
+            "type": "object",
+            "properties": {
+                "error_code": {
+                    "type": "string"
+                },
+                "error_message": {
+                    "type": "string"
+                }
+            }
+        },
+        "AGNCreateSchema": {
+            "xml": {
+                "name": "AGCCreateSchema"
+            },
+            "type": "object",
+            "properties": {
+                "supplier_store": {
+                    "type": "string",
+                    "description": "supplier store sk linked with client store"
+                },
+                "source_number": {
+                    "type": "string",
+                    "description": "agn number"
+                },
+                "prod_list": {
+                    "type": "array",
+                    "items" : {
+                        "$ref": "#/definitions/create_agn_prod_list"
+                    },
+                    "description": "product list to create agn products"
+                }
+            }
+        },
+        "POReceiveSchema": {
+            "xml": {
+                "name": "POReceiveSchema"
+            },
+            "type": "object",
+            "properties": {
+                "total_received_qty": {
+                    "type": "integer"
+                },
+                "po_id": {
+                    "type": "string",
+                    "description": "PO object ID to Receive"
+                },
+                "prod_number": {
+                    "type": "string"
+                },
+                "source": {
+                    "type": "string"
+                }
+            }
+        },
+        "POSerializeSchema": {
+            "xml": {
+                "name": "POSerializeSchema"
+            },
+            "type": "object",
+            "properties": {
+                "total_received_qty": {
+                    "type": "integer",
+                    "required": true
+                },
+                "total_expected_qty":{
+                    "type": "integer"
+                },
+                "po_id": {
+                    "type": "string",
+                    "description": "PO object ID to Receive"
+                },
+                "prod_number": {
+                    "type": "string",
+                    "required": "True"
+                },
+                "mrp": {
+                    "type": "integer"
+                },
+                "prod_sku": {
+                    "type": "string",
+                    "description": "Product SKU against Receiving will happen"
+                },
+                "prod_name": {
+                    "type": "string"
+                },
+                "source": {
+                    "type": "string"
+                },
+                "ser_qty":{
+                    "type": "integer"
+                },
+                "exp_date": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+
+            }
+        },
+        "PutAwayPayload": {
+            "xml": {
+                "name": "put away payload"
+            },
+            "type": "object",
+            "properties": {
+                "serial": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                }
+            }
+        },
+        "QualityCheckPayload": {
+            "xml": {
+                "name": "quality check payload"
+            },
+            "type": "object",
+            "properties": {
+                "serial": {
+                        "type": "string"
+                },
+                "action": {
+                    "type": "string"
+                },
+                "flow": {
+                    "type": "string"
+                },
+                "ship_key": {
+                    "type": "string"
+                },
+                "rack": {
+                    "type": "string"
+                },
+                "extra_item_update":{
+                    "type": "object",
+                    "properties": {
+                        "length": {
+                            "type": "integer"
+                        }
+                    }
+                }
+
+            }
+        },
+        "QualityCheckResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "serial": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "success": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "message": {
+                    "type": "string"
+                },
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/errors"
+                    }
+                }
+            }
+        }
+    }
+}
+
+

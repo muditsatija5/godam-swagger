@@ -1,0 +1,96 @@
+<header id="header" class="header">
+   <div class="row">
+      <div class="col-md-1">
+         <img src="assets/images/delhivery-32x32.png" height="60px"/>
+      </div>
+      <div class="navbar-collapse collapse col-md-7">
+         <ul class="nav navbar-nav">
+            <li><a href="">Home</a></li>
+            <li class="active"><a ui-sref="document.landing" title="Documentation">Documentation</a></li>
+            <li>
+               <a id="user-dropdown" href="" data-toggle="dropdown" title="User Options">
+                  Select Swagger File<i class="fa fa-caret-down fa-left"></i>
+               </a>
+               <ul role="menu" aria-labelledby="user-dropdown" class="dropdown-menu">
+                  <li role="presentation" ng-repeat="file in projName">
+                     <a ui-sref="swagger({param: file.fileName})">{{file.title}}</a>
+                  </li>
+               </ul>
+            </li>
+            <li><a href="" title="Support">Support</a></li>
+            <li><a href="" title="Blog">Announcements</a></li>
+         </ul>
+         </div>
+         <ul class="nav navbar-nav pull-right">
+            <li>
+               <div class="searchbox">
+                  <div class="fa fa-search"></div>
+                  <span class="twitter-typeahead" style="position: relative; display: inline-block">
+                     <input type="text" class="typeahead tt-hint" readonly="" autocomplete="off" spellcheck="false" tabindex="-1" dir="ltr" style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; opacity: 1; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0.0470588);">
+                     <input type="text" placeholder="Search" class="typeahead tt-input" autocomplete="off" spellcheck="false" dir="auto" style="position: relative; vertical-align: top; background-color: transparent;">
+                     <pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Roboto Slab', serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre>
+                     <div class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none;">
+                        <div class="tt-dataset tt-dataset-docs"></div>
+                        <div class="tt-dataset tt-dataset-support"></div>
+                        <div class="tt-dataset tt-dataset-blog"></div>
+                        <div class="tt-notfound">No results found</div>
+                     </div>
+                  </span>
+               </div>
+            </li>
+            <li>
+               <a id="user-dropdown" href="" data-toggle="dropdown" title="User Options">
+                  <div class="fa fa-caret-down fa-left"></div>
+               </a>
+               <ul role="menu" aria-labelledby="user-dropdown" class="dropdown-menu">
+                  <li role="presentation"><a href="">Admin Panel</a></li>
+                  <li role="presentation"><a href="">Log Out</a></li>
+               </ul>
+            </li>
+         </ul>
+      </div>
+   </div>   
+</header>
+<div style="/*margin-top: 20px; margin-bottom: 20px; border: 0;*/ border-top: 7px solid #eeeeee;"></div>
+
+
+
+<!-- new top bar -->
+
+
+<!-- <div class="layer"></div>
+<nav class="header">
+    <nav class="navbar navbar-default"> 
+      <div class="logo_wrapper">
+        <div class="navbar-header">
+          <a href="javascript:" class="pull-left left-menu-toggle">
+            <i class="icon-ham"></i>
+          </a>
+          <a ui-sref="document.landing" class="pull-left">
+            <img class="logo" alt="" src="assets/images/logo_square.png">
+            <span class="logo_lext hidden-xs">GODAM-SWAGGER</span>
+          </a>
+         </div>
+         <ul class="nav navbar-nav">
+            <li><a href="">Home</a></li>
+            <li><a ui-sref="document.landing" title="Documentation">Documentation</a></li>
+            <li>
+               <a id="user-dropdown" href="" data-toggle="dropdown" title="User Options">
+                  Select Swagger File<i class="fa fa-caret-down fa-left"></i>
+               </a>
+               <ul role="menu" aria-labelledby="user-dropdown" class="dropdown-menu">
+                  <li role="presentation" ng-repeat="file in projName">
+                     <a ui-sref="swagger({param: file.fileName})">{{file.title}}</a>
+                  </li>
+               </ul>
+            </li>
+            <li><a href="" title="Support">Support</a></li>
+            <li><a href="" title="Blog">Announcements</a></li>
+         </ul>
+      </div>
+        <ul class="nav navbar-nav navbar-right navbar-top-links">
+            <li> <a href=""><i class="icon-search"></i></a> </li>
+            <li class="hidden-xs"> <a href=""><i class="icon-help"></i></a> </li>
+        </ul>
+    </nav>
+</nav> -->
