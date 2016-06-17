@@ -1,4 +1,4 @@
-<div style="margin: 5px" ng-init="getJsonData()">
+<!-- <div style="margin: 5px" ng-init="getJsonData()">
 	<div ng-repeat="(titles, val) in apiList | orderBy: 'title' | groupBy: 'title'">
 		<hr ng-show="!$first">
 		<a style="margin: 5px 5px 0px 15px">{{titles}}</a>
@@ -13,10 +13,10 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 
 
-<!-- <div ng-init="getJsonData()">
+<div ng-init="getJsonData()">
     <div id="sidebar-wrapper">
         <ul class="nav sidebar-nav" id="accordion">
             <li class="parent_menu panel" ng-repeat="(titles, val) in apiList | orderBy: 'title' | groupBy: 'title'">
@@ -28,13 +28,13 @@
 					<li ng-repeat="(key, value) in val | groupBy: 'tags'">
 						
 						<a href="" eat-click>{{key}}</a>
-						<div ng-repeat="api in value">
+						<div ng-repeat="api in value" style="display: inline-flex; padding: 8px">
 							<span ng-class="{'type-get': api.requestType == 'get', 'type-post': api.requestType == 'post', 'type-put': api.requestType == 'put', 'type-delete': api.requestType == 'delete'}" class="pg-type" >{{api.requestType}}</span>
-							<a ui-sref="document.landing.content({apiObj: api, definitions: definitions})" title={{api.api}}>{{api.api | limitTo: 20}}{{api.api.length > 20 ? '...' : ''}}</a>
+							<a style="padding: 0px" ui-sref="document.landing.content({apiObj: api, definitions: definitions})" title={{api.api}}>{{api.api | limitTo: 20}}{{api.api.length > 20 ? '...' : ''}}</a>
 						</div>
 					</li>
             	</ul>
         	</li>
         </ul>
     </div>
-</div> -->
+</div>
