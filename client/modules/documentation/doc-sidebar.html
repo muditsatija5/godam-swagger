@@ -1,21 +1,3 @@
-<!-- <div style="margin: 5px" ng-init="getJsonData()">
-	<div ng-repeat="(titles, val) in apiList | orderBy: 'title' | groupBy: 'title'">
-		<hr ng-show="!$first">
-		<a style="margin: 5px 5px 0px 15px">{{titles}}</a>
-		<div ng-repeat="(key, value) in val | groupBy: 'tags'" style="margin: 5px">
-			<hr>
-			<span class="" style="margin: 5px 5px 5px 15px">
-				{{key}}
-			</span>
-			<div ng-repeat="api in value" style="margin: 10px">
-				<span ng-class="{'type-get': api.requestType == 'get', 'type-post': api.requestType == 'post', 'type-put': api.requestType == 'put', 'type-delete': api.requestType == 'delete'}" class="pg-type" style="margin: 5px">{{api.requestType}}</span>
-				<a class="" ui-sref="document.landing.content({apiObj: api, definitions: definitions})" title={{api.api}} style="color: #666">{{api.api | limitTo: 30}}{{api.api.length > 30 ? '...' : ''}}</a>
-			</div>
-		</div>
-	</div>
-</div> -->
-
-
 <div ng-init="getJsonData()">
     <div id="sidebar-wrapper">
         <ul class="nav sidebar-nav" id="accordion">

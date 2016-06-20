@@ -3,10 +3,6 @@
 var app = angular.module('swaggerApp');
 
 app.controller('swagController', function($scope, $rootScope, $state, $stateParams) {
-	// console.log('init');
-
-	// console.log('params = ', $stateParams);
-
 	var fileName = $stateParams.param;
 	
 	$(function () {
@@ -61,10 +57,5 @@ app.controller('swagController', function($scope, $rootScope, $state, $statePara
       });
 
       window.swaggerUi.load();
-      function log() {
-        if ('console' in window) {
-          // console.log.apply(console, arguments);
-        }
-      }
   	});
 });
