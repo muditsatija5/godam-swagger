@@ -2,23 +2,27 @@ var app = angular.module('swaggerApp', ['ui.router', 'ngSanitize', 'angular.filt
 
 app.run(['$rootScope', '$http', '$state', '$window' , '$log' , '$location', function($rootScope, $http, $state, $window, $log, $location) {
     // $rootScope._user = null;
-    console.log('app.run = ', $state);
+    // console.log('$location = ', $location.$$path);
     $state.go('document.landing');
 
-    // if(!Enduser.isAuthenticated()) {
-    //     console.log('app run condition');
-    //   $state.go('home.login');
+    // if($location.$$path == '' || $location.$$path == '/') {
+    //     console.log('app run condition 1');
+    //     $state.go('document.landing');
     // } else {
     //     console.log('app run condition 2');
-    //     $state.go('home.app.view');
+    //     $state.go('swagger');
     // }
 
-    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, notifyService) {
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         
-        console.log('fromState = ', fromState.name, 'toState = ', toState.name);
-        // if(fromState.name == 'swagger') {
-        //     $state.go('swagger', {param: 'godam'});
-        // }
+        // console.log('fromState = ', fromState.name, 'toState = ', toState.name);
+        if(fromState.name == '' && toState.name == 'swagger') {
+            // console.log('$on 1');
+            event.preventDefault();
+            $state.go('document.landing');
+        } else {
+            return;
+        }
 
     });
 }])

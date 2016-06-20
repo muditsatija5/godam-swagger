@@ -3,7 +3,7 @@
 var app = angular.module('swaggerApp');
 
 app.controller('swagController', function($scope, $rootScope, $state, $stateParams) {
-	console.log('init');
+	// console.log('init');
 
 	// console.log('params = ', $stateParams);
 
@@ -42,8 +42,6 @@ app.controller('swagController', function($scope, $rootScope, $state, $statePara
             });
           }
 
-          console.log("yessssssss");
-
           if(window.SwaggerTranslator) {
             window.SwaggerTranslator.translate();
           }
@@ -63,29 +61,6 @@ app.controller('swagController', function($scope, $rootScope, $state, $statePara
       });
 
       window.swaggerUi.load();
-
-
-        // function addApiKeyAuthorization(){
-        //   // var key = encodeURIComponent($('#input_apiKey')[0].value);
-        //   if(key && key.trim() != "") {
-        //     console.log('hi');
-              // var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization("api_key", key, "query");
-              // swaggerUi.api.clientAuthorizations.add("key", new SwaggerClient.ApiKeyAuthorization("Authorization", key, "header"));
-              // swaggerUi.api.clientAuthorizations.add("key", new SwaggerClient.ApiKeyAuthorization("X-Mashape-Key", "token 94ffa55afb5e31244385f2a0bd6238f947e7e2ba", "header"));
-              // log("added key " + key);
-      //     }
-      // }
-
-      // $('#input_apiKey').change(addApiKeyAuthorization);
-
-      // if you have an apiKey you would like to pre-populate on the page for demonstration purposes...
-      
-        // var apiKey = "token 94ffa55afb5e31244385f2a0bd6238f947e7e2ba";
-        // $('#input_apiKey').val(apiKey);
-      
-
-      // window.swaggerUi.load();
-
       function log() {
         if ('console' in window) {
           // console.log.apply(console, arguments);

@@ -119,6 +119,12 @@
 
 <div class="content-wrapper menu_visible" ng-init="getPageDetails()">
     <div class="content-area">
+    <div class="row">
+        <div class="alert alert-danger text" ng-show="error">
+            <button ng-click="error = !error" class="close" type="button">&times;</button>
+            &nbsp;{{errorMsg}}
+        </div>
+    </div>
         
         <div class="container-fluid">
             <div class="row">
@@ -126,361 +132,148 @@
                 	<span class="pg-type-big pg-type" ng-class="{'type-get': apiObject.requestType == 'get', 'type-post': apiObject.requestType == 'post', 'type-put': apiObject.requestType == 'put', 'type-delete': apiObject.requestType == 'delete'}">{{apiObject.requestType}}</span>
                 	{{apiObject.api}}
                 </h4>
+                <p style="margin-left: 14px">{{apiObject.data.summary}}</p>
+                <hr>
             </div>
-            <section>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <h4>Basic</h4>
+
+            <div ng-show="showRequestBody">
+            <h1 style="margin: 10px">Examples</h1>
+            <h3>Sample Request Body</h3>
+            <div style="border: grey solid 1px; border-radius: 7px; box-shadow: 0 0 3px #6A6767; padding: 10px">
+                <json-formatter open="4" json="requestBody"></json-formatter>
+            </div>
+            <hr>
+        </div>
+
+        <div ng-show="responses">
+            <div>
+                <h1>Result Format</h1>
+                <ul class="nav nav-pills">
+                    <li ng-repeat="tab in responses track by $index" data-toggle="tab" ng-class="{'active': $index == current}">
+                        <a href="{{$index}}" id="_{{$index}}" ng-init="($index == '0' ? getResponseSchema(tab.schemaRef) : null)" ng-click="getResponseSchema(tab.schemaRef)">{{tab.responseName}}</a>
+                    </li>
+                </ul>
+                <div style="border: grey solid 1px; border-radius: 7px; box-shadow: 0 0 3px #6A6767; padding: 10px">
+                    <div class="tab-content">
+                        <json-formatter open="4" json="selectedSchema"></json-formatter>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <table class="table_custom_1">
-                            <thead>
-                                <tr>
-                                    <th>Field #</th>
-                                    <th>Field 1</th>
-                                    <th>Field 2</th>
-                                    <th>Field 3</th>
-                                    <th>Field 4</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            </div>
+            <hr>
+        </div>
+
+        <h1 style="margin: 10px">Documentation</h1>
+        <section>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h4>Request</h4>
                 </div>
-            </section>
-            <section>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <h4>Stripped</h4>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table class="table_custom_1">
+                        <thead>
+                            <tr>
+                            <th>
+                                Parameter Name
+                            </th>
+                            <th>
+                                Data Type
+                            </th>
+                            <th>
+                                Parameter Type
+                            </th>
+                            <th>
+                                Required
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="param in apiObject.data.parameters">
+                                <td ng-bind="param.name"></td>
+                                <td ng-bind="param.type"></td>
+                                <td ng-bind="param.in"></td>
+                                <td ng-bind="param.required"></td>
+                                <td ng-bind=param.description></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <table class="table_custom_1 table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Field #</th>
-                                    <th>Field 1</th>
-                                    <th>Field 2</th>
-                                    <th>Field 3</th>
-                                    <th>Field 4</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            </div>
+            <hr>
+        </section>
+
+        <section>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h4>Response</h4>
                 </div>
-            </section>
-            <section>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <h4>Table Hover</h4>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table class="table_custom_1 table-striped">
+                        <thead>
+                           <tr>
+                            <th>
+                                Field Name
+                            </th>
+                            <th>
+                                Data Type
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(key, value) in responseParams.properties">
+                                <td ng-show="value.type" ng-bind="key">
+                                <td ng-show="value.type" ng-bind="value.type"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <table class="table_custom_1 table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Field #</th>
-                                    <th>Field 1</th>
-                                    <th>Field 2</th>
-                                    <th>Field 3</th>
-                                    <th>Field 4</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            </div>
+            <hr>
+        </section>
+
+        <section>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h4>Payload</h4>
                 </div>
-            </section>
-            <section>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <h4>Tables in a Panel</h4>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="showRequestBody">
+                    <table class="table_custom_1 table-hover">
+                        <thead>
+                            <tr>
+                            <th>
+                                Field Name
+                            </th>
+                            <th>
+                                Data Type
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="(key, value) in requestBody">
+                            <td ng-show="value.type" ng-bind="key">
+                            <td ng-show="value.type" ng-bind="value.type"></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title"> Panel 1</h3>
-                            </div>
-                            <table class="table_custom_1">
-                                <thead>
-                                    <tr>
-                                        <th>Field #</th>
-                                        <th>Field 1</th>
-                                        <th>Field 2</th>
-                                        <th>Field 3</th>
-                                        <th>Field 4</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="inline-block-xs col-9">8465984564564333</td>
-                                        <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="inline-block-xs col-9">8465984564564333</td>
-                                        <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="inline-block-xs col-9">8465984564564333</td>
-                                        <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="inline-block-xs col-9">8465984564564333</td>
-                                        <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="inline-block-xs col-9">8465984564564333</td>
-                                        <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title"> Panel 2</h3>
-                            </div>
-                            <table class="table_custom_1">
-                                <thead>
-                                    <tr>
-                                        <th>Field #</th>
-                                        <th>Field 1</th>
-                                        <th>Field 2</th>
-                                        <th>Field 3</th>
-                                        <th>Field 4</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="inline-block-xs col-9">8465984564564333</td>
-                                        <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="inline-block-xs col-9">8465984564564333</td>
-                                        <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="inline-block-xs col-9">8465984564564333</td>
-                                        <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="inline-block-xs col-9">8465984564564333</td>
-                                        <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="inline-block-xs col-9">8465984564564333</td>
-                                        <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                        <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div ng-show="!showRequestBody" style="border: grey solid 1px; border-radius: 7px; box-shadow: 0 0 3px #6A6767; padding: 10px; margin: 10px">
+                    No Payload
                 </div>
-            </section>
-            <section>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <h4>Table With checkbox</h4>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <table class="table_custom_1 checkbox_table">
-                            <thead>
-                                <tr>
-                                    <th><input type="checkbox" id="check_all">
-                                        <label for="selectall"></label></th>
-                                    <th>Field #</th>
-                                    <th>Field 1</th>
-                                    <th>Field 2</th>
-                                    <th>Field 3</th>
-                                    <th>Field 4</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="inline-block-xs col-9"><input class="name" name="name" value="1" type="checkbox"></td>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9"><input class="name" name="name" value="2" type="checkbox"></td>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9"><input class="name" name="name" value="3" type="checkbox"></td>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="inline-block-xs col-9"><input class="name" name="name" value="4" type="checkbox"></td>
-                                    <td class="inline-block-xs col-9">8465984564564333</td>
-                                    <td class="block-xs col-5"><b>Field 1</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 2</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 3</b><span>Value</span></td>
-                                    <td class="block-xs col-5"><b>Field 4</b><span>Value</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
+                <hr>
+            </div>
+        </section>
+
+        <button class="btn btn-default" style="margin: 10px" ng-click="toSwagger({fileName: apiObject.fileName, url: apiObject.api, tag: apiObject.tags, requestType: apiObject.requestType})">
+            <i class="fa fa-compass fa-right"></i>Test in the API EXPLORER
+        </button>
         </div>
     </div>
     <br>
