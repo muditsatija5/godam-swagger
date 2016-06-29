@@ -7,7 +7,7 @@
     },
     "host": "qa2-godam.delhivery.com",
     "schemes": [
-        "http"
+        "https"
     ],
     "basePath": "",
     "produces": [

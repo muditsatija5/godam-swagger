@@ -8,16 +8,16 @@
           </a>
           <a ui-sref="document.landing" class="pull-left">
             <img class="logo" alt="" src="assets/images/logo_square.png">
-            <span class="logo_lext hidden-xs">GODAM-SWAGGER</span>
+            <span class="logo_lext hidden-xs">{{'LABEL_TEXT.GODAM_SWAGGER' | translate}}</span>
           </a>
         </div>
         <div>
           <ul class="nav navbar-nav" style="font-weight: bolder">
-            <li><a href="">Home</a></li>
-            <li><a ui-sref="document.landing" title="Documentation">Documentation</a></li>
+            <li><a href="">{{'LABEL_TEXT.HOME' | translate}}</a></li>
+            <li><a ui-sref="document.landing" title="Documentation">{{'LABEL_TEXT.DOCUMENTATION' | translate}}</a></li>
             <li>
                <a id="user-dropdown" href="" data-toggle="dropdown" title="User Options">
-                  Select Swagger File<i class="fa fa-caret-down fa-left"></i>
+                  {{'LABEL_TEXT.SEL_SWAG_FILE' | translate}}<i class="fa fa-caret-down fa-left"></i>
                </a>
                <ul role="menu" aria-labelledby="user-dropdown" class="dropdown-menu">
                   <li role="presentation" ng-repeat="file in projName">
@@ -25,8 +25,8 @@
                   </li>
                </ul>
             </li>
-            <li><a href="" title="Support">Support</a></li>
-            <li><a href="" title="Blog">Announcements</a></li>
+            <li><a href="" title="Support">{{'LABEL_TEXT.SUPPORT' | translate}}</a></li>
+            <li><a href="" title="Blog">{{'LABEL_TEXT.ANNOUNCEMENTS' | translate}}</a></li>
           </ul>
         </div>
       </div>

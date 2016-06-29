@@ -18,8 +18,8 @@
             </div>
 
             <div ng-show="showRequestBody">
-            <h1 style="margin: 10px">Examples</h1>
-            <h3>Sample Request Body</h3>
+            <h1 style="margin: 10px">{{'LABEL_TEXT.EXP' | translate}}</h1>
+            <h3>{{'LABEL_TEXT.SAMPLE_REQ' | translate}}</h3>
             <div style="border: grey solid 1px; border-radius: 7px; box-shadow: 0 0 3px #6A6767; padding: 10px">
                 <json-formatter open="4" json="requestBody"></json-formatter>
             </div>
@@ -28,7 +28,7 @@
 
         <div ng-show="responses">
             <div>
-                <h1>Result Format</h1>
+                <h1>{{'LABEL_TEXT.RES_FORMAT' | translate}}</h1>
                 <ul class="nav nav-pills">
                     <li ng-repeat="tab in responses track by $index" data-toggle="tab" ng-class="{'active': $index == current}">
                         <a href="{{$index}}" id="_{{$index}}" ng-init="($index == '0' ? getResponseSchema(tab.schemaRef) : null)" ng-click="getResponseSchema(tab.schemaRef)">{{tab.responseName}}</a>
@@ -43,11 +43,11 @@
             <hr>
         </div>
 
-        <h1 style="margin: 10px">Documentation</h1>
+        <h1 style="margin: 10px">{{'LABEL_TEXT.DOCUMENTATION' | translate}}</h1>
         <section>
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <h4>Request</h4>
+                    <h4>{{'LABEL_TEXT.REQ' | translate}}</h4>
                 </div>
             </div>
             <div class="row">
@@ -56,19 +56,19 @@
                         <thead>
                             <tr>
                             <th>
-                                Parameter Name
+                                {{'LABEL_TEXT.PARAM_NAME' | translate}}
                             </th>
                             <th>
-                                Data Type
+                                {{'LABEL_TEXT.DATA_TYPE' | translate}}
                             </th>
                             <th>
-                                Parameter Type
+                                {{'LABEL_TEXT.PARAM_TYPE' | translate}}
                             </th>
                             <th>
-                                Required
+                                {{'LABEL_TEXT.REQUIRED' | translate}}
                             </th>
                             <th>
-                                Description
+                                {{'LABEL_TEXT.DESC' | translate}}
                             </th>
                         </tr>
                         </thead>
@@ -90,7 +90,7 @@
         <section>
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <h4>Response</h4>
+                    <h4>{{'LABEL_TEXT.RESP' | translate}}</h4>
                 </div>
             </div>
             <div class="row">
@@ -99,10 +99,10 @@
                         <thead>
                            <tr>
                             <th>
-                                Field Name
+                                {{'LABEL_TEXT.FLD_NAME' | translate}}
                             </th>
                             <th>
-                                Data Type
+                                {{'LABEL_TEXT.DATA_TYPE' | translate}}
                             </th>
                         </tr>
                         </thead>
@@ -121,7 +121,7 @@
         <section>
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <h4>Payload</h4>
+                    <h4>{{'LABEL_TEXT.PAYLOAD' | translate}}</h4>
                 </div>
             </div>
             <div class="row">
@@ -130,10 +130,10 @@
                         <thead>
                             <tr>
                             <th>
-                                Field Name
+                                {{'LABEL_TEXT.FLD_NAME' | translate}}
                             </th>
                             <th>
-                                Data Type
+                                {{'LABEL_TEXT.DATA_TYPE' | translate}}
                             </th>
                         </tr>
                         </thead>
@@ -146,14 +146,14 @@
                     </table>
                 </div>
                 <div ng-show="!showRequestBody" style="border: grey solid 1px; border-radius: 7px; box-shadow: 0 0 3px #6A6767; padding: 10px; margin: 10px">
-                    No Payload
+                    {{'LABEL_TEXT.NO_PAYLOAD' | translate}}
                 </div>
                 <hr>
             </div>
         </section>
 
         <button class="btn btn-default" style="margin: 10px" ng-click="toSwagger({fileName: apiObject.fileName, url: apiObject.api, tag: apiObject.tags, requestType: apiObject.requestType})">
-            <i class="fa fa-compass fa-right"></i>Test in the API EXPLORER
+            <i class="fa fa-compass fa-right"></i>{{'LABEL_TEXT.TEST_IN_SWAG' | translate}}
         </button>
         </div>
     </div>

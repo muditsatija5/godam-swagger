@@ -1,4 +1,4 @@
-var app = angular.module('swaggerApp', ['ui.router', 'ngSanitize', 'angular.filter', 'jsonFormatter']);
+var app = angular.module('swaggerApp', ['ui.router', 'ngSanitize', 'angular.filter', 'jsonFormatter', 'pascalprecht.translate']);
 
 app.run(['$rootScope', '$http', '$state', '$window' , '$log' , '$location', 
     function($rootScope, $http, $state, $window, $log, $location) {
@@ -20,4 +20,9 @@ app.run(['$rootScope', '$http', '$state', '$window' , '$log' , '$location',
             event.preventDefault();
         });
     }
-});
+})
+.config(['$translateProvider', 'langEn', function ($translateProvider, langEn) {
+  $translateProvider.translations('en', langEn);
+ 
+  $translateProvider.preferredLanguage('en');
+}]);

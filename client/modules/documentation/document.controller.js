@@ -3,7 +3,7 @@
 var app = angular.module('swaggerApp');
 
 app.controller('docController', 
-	function($scope, $rootScope, $state, $http, $stateParams, documentService, settings) {
+	function($scope, $rootScope, $state, $http, $stateParams, documentService) {
 	
 		$rootScope.projName = [];
 
